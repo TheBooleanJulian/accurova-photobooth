@@ -4,6 +4,11 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "accurova-photobooth",
   "compatibility_date": "2026-11-01",
+  // Production address. Cloudflare creates the DNS record and certificate on
+  // deploy; accurova.com must be a zone in the same Cloudflare account.
+  "routes": [{ "pattern": "photobooth.accurova.com", "custom_domain": true }],
+  // Keep https://accurova-photobooth.juliancheung.workers.dev for testing.
+  "workers_dev": true,
   // Runs on every `wrangler deploy`, so the dashboard build command can stay empty.
   "build": {
     "command": "npm install --no-audit --no-fund && npm run build"

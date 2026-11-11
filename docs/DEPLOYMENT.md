@@ -24,9 +24,14 @@ Configuration lives in `wrangler.jsonc` at the repo root.
   keeps template JSON and the service worker uncached.
 - Templates are deployed with the site at `/templates`.
 
-After the first deploy open `https://<worker>.<account>.workers.dev/admin/diagnostics`
-on the tablet. A custom domain (for example `booth.accurova.com`) can be added
-under the Worker's Domains & Routes at any time; the camera only needs HTTPS.
+Addresses:
+- Production: `https://photobooth.accurova.com` (custom domain declared in
+  `wrangler.jsonc`; Cloudflare creates the DNS record and certificate on deploy).
+- Testing: `https://accurova-photobooth.juliancheung.workers.dev` (kept on via `workers_dev`).
+
+If a deploy fails on the custom domain, either `accurova.com` is in a different
+Cloudflare account from the Worker, or a DNS record named `photobooth` already
+exists and must be deleted first.
 
 Manual deploy from a computer: `npx wrangler login && npx wrangler deploy`.
 
