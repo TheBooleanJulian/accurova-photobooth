@@ -28,7 +28,9 @@ orientation the booth will use (portrait).
    shows the stream restarting.
 9. Add the page to the Home Screen, open it from there, and repeat steps 1 and 4
    (installed mode can behave differently from a Safari tab).
-10. Tap **Download report** in each mode and attach the JSON files here or to an issue.
+10. Export the results: **Share report** (AirDrop, Mail, Messages), **Copy report** or
+    **Download report**. If none works, screenshot the **Summary** box at the top;
+    it holds the numbers that decide the capture strategy.
 
 ## Results
 
@@ -39,6 +41,12 @@ orientation the booth will use (portrait).
 | _pending_ | iPad Pro 10.5" (2017) | | Safari tab | Front | | | | | |
 | _pending_ | iPad Pro 10.5" (2017) | | Safari tab | Rear | | | | | |
 | _pending_ | iPad Pro 10.5" (2017) | | Home Screen | Front | | | | | |
+
+Operator notes without an exported report:
+
+| Date | Device | What was observed | Still missing |
+| --- | --- | --- | --- |
+| 2026-11-12 | iPad Pro 10.5" (2017) | The diagnostics page selected **stream frames** as the capture method (so ImageCapture is unavailable, as expected). The report could not be exported; the iPad has battery problems. | Stream and capture dimensions, OS version, installed-mode behaviour. Use **Share report** or screenshot the summary box. |
 
 ### Simulated / non-target (not evidence about the iPad)
 

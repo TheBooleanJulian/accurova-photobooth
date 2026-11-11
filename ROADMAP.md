@@ -16,7 +16,8 @@ Legend: ✅ done · 🟡 built, awaiting validation · ⬜ not started
 - ✅ Runtime capability detection, provider selection with admin override
 - ✅ Diagnostics page: stream probe, capture tests, original download, JSON report
 - ✅ Verified in desktop Chrome with a fake camera device (not real hardware)
-- ⬜ **Validate on the iPad Pro 10.5" (2017) in Safari** — protocol in `docs/CAMERA_COMPATIBILITY.md`
+- 🟡 **Validate on the iPad Pro 10.5" (2017) in Safari** — first run (2026-11-12) confirmed
+  stream capture is the method; the measured resolutions are still needed
 - ⬜ Record results and decide the capture strategy (see open question below)
 
 **Gate:** no further visitor UI until M1 is validated on hardware.

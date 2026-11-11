@@ -290,6 +290,37 @@ export function CameraDiagnosticsPage() {
     }
   };
 
+  // Hand the report to the system share sheet (AirDrop, Mail, Messages, Notes…).
+  const canShare = typeof navigator.share === 'function';
+  const shareReport = async () => {
+    try {
+      await navigator.share({ title: 'Camera diagnostics report', text: reportJson });
+    } catch (e) {
+      if ((e as { name?: string }).name !== 'AbortError') setError('Sharing failed. Take a screenshot of the summary instead.');
+    }
+  };
+
+  // The few numbers that decide the capture strategy, short enough to read out or photograph.
+  const best = captures.reduce<CaptureEntry | null>(
+    (top, c) => (!top || c.record.width * c.record.height > top.record.width * top.record.height ? c : top),
+    null,
+  );
+  const probeMax = probes.reduce((top, p) => (p.width * p.height > top.width * top.height ? p : top), {
+    width: 0,
+    height: 0,
+  } as { width: number; height: number });
+  const summary = [
+    `Use: ${selection.method ?? 'none'}`,
+    `ImageCapture: ${env?.hasImageCapture ? 'yes' : 'no'}`,
+    `Stream: ${frameSize ? `${frameSize.width}×${frameSize.height}` : 'not started'}`,
+    `Probe max: ${probeMax.width ? `${probeMax.width}×${probeMax.height}` : 'not run'}`,
+    `Best capture: ${best ? `${best.record.width}×${best.record.height} ${best.record.captureMethod}` : 'none yet'}`,
+    `Camera: ${streamInfo?.facingMode ?? facing}`,
+    env?.deviceHint ?? '',
+  ]
+    .filter(Boolean)
+    .join(' · ');
+
   const running = stream !== null;
   const cap = (method: CaptureMethod) => capabilities.find((c) => c.method === method);
 
@@ -307,6 +338,7 @@ export function CameraDiagnosticsPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          {canShare && <Button onClick={shareReport}>Share report</Button>}
           <Button onClick={copyReport}>{copied ? 'Copied ✓' : 'Copy report'}</Button>
           <Button
             onClick={() =>
@@ -317,6 +349,11 @@ export function CameraDiagnosticsPage() {
           </Button>
         </div>
       </header>
+
+      <section className="rounded-2xl border border-accent/50 bg-panel p-4">
+        <h2 className="mb-2 text-sm tracking-widest text-muted uppercase">Summary (screenshot this if you can’t export)</h2>
+        <p className="font-mono text-base leading-relaxed select-all sm:text-lg">{summary}</p>
+      </section>
 
       {error && (
         <p role="alert" className="rounded-xl border border-bad/60 bg-bad/10 px-4 py-3 text-bad">
