@@ -1,0 +1,16 @@
+// Cloudflare Workers (static assets) deployment of the kiosk PWA.
+// "name" must match the Worker's name in the Cloudflare dashboard.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "accurova-photobooth",
+  "compatibility_date": "2026-11-01",
+  // Runs on every `wrangler deploy`, so the dashboard build command can stay empty.
+  "build": {
+    "command": "npm install --no-audit --no-fund && npm run build"
+  },
+  "assets": {
+    "directory": "./apps/kiosk/dist",
+    // Client-side routes (/kiosk/..., /admin/...) fall back to index.html.
+    "not_found_handling": "single-page-application"
+  }
+}

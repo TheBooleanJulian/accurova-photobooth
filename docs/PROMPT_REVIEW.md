@@ -1,6 +1,6 @@
 # Review of the master prompt (2026-11-11)
 
-The prompt (`MASTER_PROMPT.md`) is well structured: clear module boundaries,
+The master prompt is well structured: clear module boundaries,
 honest-capture rules, a hardware gate at M1 and mock-first external services.
 These are the points worth resolving, most important first.
 
@@ -29,7 +29,7 @@ Decide after the measurement, not before.
 ## 3. Two requirements conflict as written
 
 "New templates must not require separate builds" versus static hosting on
-Cloudflare Pages. Resolved here by loading templates at runtime from
+Cloudflare. Resolved here by loading templates at runtime from
 `/templates` (ADR 0002): no code change or build *configuration* per client,
 but adding files still means a redeploy until templates move to R2 or the API (M7).
 

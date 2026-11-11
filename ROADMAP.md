@@ -9,6 +9,7 @@ Legend: ✅ done · 🟡 built, awaiting validation · ⬜ not started
 - ✅ `little-red-dot-tours` template: config, EN + zh-CN locales, 6 placeholder
   backgrounds, placeholder frame, sponsor and logo placeholders
 - ✅ FastAPI skeleton: health + read-only template endpoints
+- ✅ Infra: Cloudflare Workers config (`wrangler.jsonc`), GitHub Actions CI, API Dockerfile, `docs/DEPLOYMENT.md`
 
 ## M1 — Camera proof of concept 🟡
 - ✅ Camera subsystem: manager, ImageCapture / stream / native providers, simulated provider
@@ -55,4 +56,4 @@ Hosting, retention jobs, PDPA review, physical reliability testing.
 ## Documentation still to write (with their milestones)
 CAMERA_SETUP (M2), SEGMENTATION + IMAGE_PROCESSING (M3), COMPOSITING (M4),
 FRAME_SYSTEM + BRAND_ASSET_GUIDE (M5), API_REFERENCE + DATABASE_SCHEMA (M6),
-DEPLOYMENT + PRIVACY (M8).
+PRIVACY (M8). DEPLOYMENT exists and grows with each milestone.

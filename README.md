@@ -36,9 +36,8 @@ python -m pytest
 
 Browsers only expose cameras over HTTPS. Two ways:
 
-1. **Deploy** `apps/kiosk/dist` to Cloudflare Pages (build command
-   `npm run build`, output directory `apps/kiosk/dist`) and open
-   `/admin/diagnostics` on the tablet.
+1. **Deploy** to Cloudflare Workers. `wrangler.jsonc` is ready; see
+   [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). Then open `/admin/diagnostics` on the tablet.
 2. **Same Wi-Fi:** `npm run dev:lan`, then open `https://<your-computer-ip>:5173/admin/diagnostics`
    and accept the self-signed certificate warning.
 
@@ -63,5 +62,6 @@ docs/                    Architecture, camera notes, ADRs
 - [Camera architecture](docs/CAMERA_ARCHITECTURE.md) and [compatibility log](docs/CAMERA_COMPATIBILITY.md)
 - [Template development](docs/TEMPLATE_DEVELOPMENT.md)
 - [Testing](docs/TESTING.md)
-- [Review of the master prompt](docs/PROMPT_REVIEW.md) and the [prompt itself](docs/MASTER_PROMPT.md)
+- [Deployment](docs/DEPLOYMENT.md)
+- [Review of the master prompt](docs/PROMPT_REVIEW.md)
 - [Decisions](docs/decisions/)
