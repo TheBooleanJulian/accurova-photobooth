@@ -11,6 +11,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY services/api/app ./app
 COPY templates /srv/templates
 
+# Session database and locally stored images. Mount a volume here to keep them.
+RUN mkdir -p /srv/services/api/data
+VOLUME /srv/services/api/data
+
 ENV PHOTOBOOTH_TEMPLATES_DIR=/srv/templates PORT=8000
 EXPOSE 8000
 CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT}"]

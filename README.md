@@ -23,7 +23,7 @@ npm run build        # type-check + production build to apps/kiosk/dist
 | `/admin/diagnostics` | Camera diagnostics (M1) |
 | `/kiosk/little-red-dot-tours` | Template-driven welcome screen |
 
-API (optional so far, serves templates and health only):
+API (templates, sessions, delivery; the kiosk does not call it yet):
 
 ```bash
 cd services/api
@@ -62,6 +62,7 @@ docs/                    Architecture, camera notes, ADRs
 - [Camera architecture](docs/CAMERA_ARCHITECTURE.md) and [compatibility log](docs/CAMERA_COMPATIBILITY.md)
 - [Template development](docs/TEMPLATE_DEVELOPMENT.md)
 - [Testing](docs/TESTING.md)
-- [Deployment](docs/DEPLOYMENT.md)
+- [Deployment](docs/DEPLOYMENT.md) and [infrastructure setup](infra/README.md)
+- [API reference](docs/API_REFERENCE.md)
 - [Review of the master prompt](docs/PROMPT_REVIEW.md)
 - [Decisions](docs/decisions/)

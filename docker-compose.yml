@@ -1,0 +1,16 @@
+# Local API with persistent data. The kiosk runs separately with `npm run dev`.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      PHOTOBOOTH_CORS_ORIGINS: http://localhost:5173
+      PHOTOBOOTH_ADMIN_TOKEN: ${PHOTOBOOTH_ADMIN_TOKEN:-}
+    volumes:
+      - api-data:/srv/services/api/data
+
+volumes:
+  api-data:

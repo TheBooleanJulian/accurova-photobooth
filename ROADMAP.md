@@ -44,7 +44,10 @@ SVG/PNG adapters, sponsor slots, final rendering, validated asset replacement
 (including SVG sanitising and font embedding).
 
 ## M6 — Visitor application ⬜
-Full kiosk flow, EN/中文, QR delivery (R2 + download page), auto reset.
+Full kiosk flow, EN/中文, QR code + download page, auto reset.
+- ✅ Built early (backend only): sessions, final-image upload, expiring download
+  tokens, retention cleanup, rate limiting, local + R2 storage adapters
+- ⬜ Supabase adapter (schema ready in `infra/supabase`), R2 verified against a real bucket
 
 ## M7 — Administration ⬜
 Admin authentication, frame/background/sponsor management, lighting

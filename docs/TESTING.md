@@ -30,10 +30,15 @@ Frontend, 60 tests:
 - Template engine: every template on disk (schema, assets, locale parity,
   frame geometry), schema rejections, registry loading, caching and errors.
 
-API, 11 tests: health honesty, listing, retrieval, unsafe ids, disabled and
-invalid templates, missing directory.
+API, 30 tests: health honesty, template listing/retrieval, unsafe ids, disabled
+and invalid templates; the full delivery flow, byte-for-byte download, token
+randomness and hashing, upload rejection (empty, non-image, PNG, truncated,
+oversized), retry revoking the old link, session and link expiry, cleanup and
+its retry on storage failure, admin auth, rate limiting, storage confinement,
+and the R2 adapter against a fake client (not a real bucket).
 
 ## Not yet covered
 
 Component tests for the pages, the end-to-end visitor flow (M6), and anything
-involving segmentation, compositing, frames, storage or delivery.
+involving segmentation, compositing or frames. R2 and Supabase have not been
+exercised against real services.

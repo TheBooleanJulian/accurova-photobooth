@@ -1,8 +1,10 @@
 from pathlib import Path
+from typing import Literal
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
+API_ROOT = Path(__file__).resolve().parents[1]
 
 
 class Settings(BaseSettings):
@@ -13,6 +15,33 @@ class Settings(BaseSettings):
     templates_dir: Path = REPO_ROOT / "templates"
     cors_origins: str = "http://localhost:5173"
 
+    # Where session metadata lives. SQLite today; a Supabase adapter follows
+    # once a project exists (schema: infra/supabase/migrations).
+    database_path: Path = API_ROOT / "data" / "photobooth.sqlite3"
+
+    # Where final photographs live.
+    storage_backend: Literal["local", "r2"] = "local"
+    storage_dir: Path = API_ROOT / "data" / "objects"
+    r2_account_id: str = ""
+    r2_access_key_id: str = ""
+    r2_secret_access_key: str = ""
+    r2_bucket: str = ""
+
+    # Retention and limits.
+    session_ttl_minutes: int = 30
+    link_expiry_hours: float = 24
+    max_upload_mb: float = 25
+    max_image_edge_px: int = 12000
+    rate_limit_per_minute: int = 30
+
+    # Bearer token for /api/admin/* (except health). Admin endpoints are
+    # disabled while this is empty.
+    admin_token: str = ""
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
+
+    @property
+    def max_upload_bytes(self) -> int:
+        return int(self.max_upload_mb * 1024 * 1024)

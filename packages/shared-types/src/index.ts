@@ -39,6 +39,9 @@ export interface ApiHealth {
   status: 'ok';
   version: string;
   templates: number;
-  /** External services and whether they are really connected. Mock adapters report `mock`. */
-  services: Record<string, 'connected' | 'mock' | 'not-configured'>;
+  /**
+   * Backing services and their real state. `local` = on-disk adapter,
+   * `connected` = remote service verified, `error` = configured but unreachable.
+   */
+  services: Record<string, 'connected' | 'local' | 'mock' | 'not-configured' | 'error'>;
 }

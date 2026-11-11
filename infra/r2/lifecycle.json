@@ -1,0 +1,10 @@
+{
+  "rules": [
+    {
+      "id": "delete-results-after-2-days",
+      "enabled": true,
+      "conditions": { "prefix": "results/" },
+      "deleteObjectsTransition": { "condition": { "type": "Age", "maxAge": 172800 } }
+    }
+  ]
+}

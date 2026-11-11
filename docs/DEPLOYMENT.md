@@ -44,11 +44,20 @@ docker build -f services/api/Dockerfile -t accurova-photobooth-api .
 docker run -p 8000:8000 -e PHOTOBOOTH_CORS_ORIGINS=https://<kiosk-origin> accurova-photobooth-api
 ```
 
-Any container host works (it listens on `$PORT`). The kiosk does not call the
-API yet, so nothing needs hosting until M3. **Decision needed before M3:**
-which host. Record it as an ADR.
+Or `docker compose up` for a local instance with a persistent volume.
 
-## 4. To prepare in your own accounts (not used by code yet)
+Any container host works (it listens on `$PORT`). It needs a persistent
+volume at `/srv/services/api/data` while it uses SQLite and local storage.
+The kiosk does not call the API yet, so nothing needs hosting until M3.
+**Decision needed before M3:** which host. Record it as an ADR.
+
+Set `PHOTOBOOTH_ADMIN_TOKEN` and schedule retention every 15 minutes:
+`python -m app.retention`, or `POST /api/admin/cleanup` with the bearer token.
+
+## 4. To prepare in your own accounts
+
+Step-by-step for R2 and Supabase: `infra/README.md`. The R2 adapter exists and
+switches on with environment variables; Supabase is schema-only so far.
 
 | Service | What to create | Needed from |
 | --- | --- | --- |

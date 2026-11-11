@@ -6,6 +6,9 @@
 - Monorepo foundation (M0): kiosk PWA, template engine, shared types, FastAPI skeleton.
 - `little-red-dot-tours` starter template with placeholder artwork.
 - Camera subsystem and `/admin/diagnostics` page (M1, pending hardware validation).
-- 60 frontend unit tests (simulated cameras) and 11 API tests.
+- 60 frontend unit tests (simulated cameras) and 30 API tests.
 - Cloudflare Workers deployment config, security headers, GitHub Actions CI, API Dockerfile.
-- Architecture, deployment, camera, template and testing docs; three ADRs; review of the master prompt.
+- Delivery backend: sessions, final-image upload with JPEG validation, hashed expiring
+  download tokens, retention cleanup, rate limiting, admin token; local and R2 storage adapters.
+- `infra/`: Supabase schema, R2 lifecycle rule and setup notes; `docker-compose.yml`.
+- Architecture, deployment, API reference, camera, template and testing docs; three ADRs; review of the master prompt.
