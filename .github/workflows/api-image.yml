@@ -31,6 +31,8 @@ jobs:
           context: .
           file: services/api/Dockerfile
           load: true
+          provenance: false
+          labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
           tags: |
             ${{ env.IMAGE }}:latest
             ${{ env.IMAGE }}:${{ github.sha }}
