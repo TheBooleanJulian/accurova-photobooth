@@ -1,0 +1,20 @@
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { CameraDiagnosticsPage } from '../pages/CameraDiagnosticsPage';
+import { HomePage } from '../pages/HomePage';
+import { KioskWelcomePage } from '../pages/KioskWelcomePage';
+
+/**
+ * Routes. Admin routes are NOT yet authenticated (M7); until then the
+ * diagnostics page only touches the local camera and stores nothing remotely.
+ */
+export function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/kiosk/:templateId" element={<KioskWelcomePage />} />
+      <Route path="/admin" element={<Navigate to="/admin/diagnostics" replace />} />
+      <Route path="/admin/diagnostics" element={<CameraDiagnosticsPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  );
+}

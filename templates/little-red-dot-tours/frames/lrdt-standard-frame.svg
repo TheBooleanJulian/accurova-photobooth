@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <!--
+    Little Red Dot Tours standard frame (PLACEHOLDER artwork, v1.0.0).
+    The photo window (x44 y220 w992 h1430) is transparent; it must match
+    "photoWindow" in template.json. Sponsor logos are separate assets placed by
+    the frame engine into the boxes described in "sponsorSlots", so they are
+    not drawn here. See docs/TEMPLATE_DEVELOPMENT.md to replace this file.
+  -->
+  <defs>
+    <pattern id="tile" width="56" height="28" patternUnits="userSpaceOnUse">
+      <path d="M28 3 L39 14 L28 25 L17 14 Z" fill="none" stroke="#8E1B1B" stroke-width="1.6"/>
+      <circle cx="28" cy="14" r="2.6" fill="#8E1B1B"/>
+      <circle cx="0" cy="14" r="2" fill="#C99A5B"/>
+      <circle cx="56" cy="14" r="2" fill="#C99A5B"/>
+    </pattern>
+  </defs>
+
+  <!-- Cream border with the photo window cut out -->
+  <path fill="#F7F0E3" fill-rule="evenodd" d="M0 0H1080V1920H0Z M44 220H1036V1650H44Z"/>
+
+  <!-- Peranakan-inspired tile bands -->
+  <rect x="0" y="0" width="1080" height="28" fill="url(#tile)" opacity="0.55"/>
+  <rect x="0" y="1892" width="1080" height="28" fill="url(#tile)" opacity="0.55"/>
+
+  <!-- Hairline around the photograph -->
+  <rect x="36" y="212" width="1008" height="1446" fill="none" stroke="#8E1B1B" stroke-width="2"/>
+
+  <!-- Header -->
+  <circle cx="540" cy="70" r="11" fill="#B3261E"/>
+  <text x="540" y="132" text-anchor="middle" font-family="'Cormorant Garamond', 'Playfair Display', Georgia, serif"
+        font-size="50" font-weight="600" textLength="800" lengthAdjust="spacing" fill="#2B1D1A">LITTLE RED DOT TOURS</text>
+  <text x="540" y="180" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="22" textLength="430" lengthAdjust="spacing" fill="#8E1B1B">YOUR SINGAPORE STORY</text>
+
+  <!-- Footer -->
+  <line x1="490" y1="1750" x2="590" y2="1750" stroke="#C99A5B" stroke-width="2"/>
+  <text x="540" y="1858" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="18" textLength="360" lengthAdjust="spacing" fill="#6B5A50">PHOTOGRAPHY BY ACCUROVA</text>
+</svg>

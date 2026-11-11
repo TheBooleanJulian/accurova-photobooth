@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "id": "little-red-dot-tours",
+  "name": "Little Red Dot Tours",
+  "defaultLocale": "en",
+  "locales": ["en", "zh-CN"],
+  "branding": {
+    "logo": "branding/logo-placeholder.svg",
+    "tagline": "YOUR SINGAPORE STORY",
+    "photographyCredit": "Photography by Accurova",
+    "colors": {
+      "background": "#F7F0E3",
+      "surface": "#FFFBF3",
+      "primary": "#8E1B1B",
+      "text": "#2B1D1A"
+    }
+  },
+  "capture": {
+    "facingMode": "user",
+    "providerOverride": "auto",
+    "countdownSeconds": 5,
+    "quality": {
+      "preferredLongestEdge": 3000,
+      "minimumLongestEdge": 2000,
+      "belowMinimumPolicy": "warn"
+    },
+    "setup": {
+      "cameraHeightCm": [100, 120],
+      "subjectDistanceM": [2.5, 3]
+    }
+  },
+  "backgrounds": [
+    {
+      "id": "marina-bay-sands",
+      "name": "Marina Bay Sands",
+      "category": "landmark",
+      "description": "Skyline view across the bay.",
+      "image": "backgrounds/marina-bay-sands-placeholder.svg",
+      "thumbnail": "backgrounds/marina-bay-sands-placeholder.svg",
+      "aspectRatio": "9:16",
+      "composition": { "subjectAnchorX": 0.5, "subjectAnchorY": 0.88, "subjectScale": 0.72, "horizonY": 0.6 },
+      "displayOrder": 1,
+      "enabled": true,
+      "placeholder": true
+    },
+    {
+      "id": "gardens-by-the-bay",
+      "name": "Gardens by the Bay",
+      "category": "landmark",
+      "description": "Supertree Grove.",
+      "image": "backgrounds/gardens-by-the-bay-placeholder.svg",
+      "thumbnail": "backgrounds/gardens-by-the-bay-placeholder.svg",
+      "aspectRatio": "9:16",
+      "composition": { "subjectAnchorX": 0.5, "subjectAnchorY": 0.88, "subjectScale": 0.72, "horizonY": 0.62 },
+      "displayOrder": 2,
+      "enabled": true,
+      "placeholder": true
+    },
+    {
+      "id": "merlion-marina-bay",
+      "name": "Merlion / Marina Bay",
+      "category": "landmark",
+      "description": "Merlion Park waterfront.",
+      "image": "backgrounds/merlion-marina-bay-placeholder.svg",
+      "thumbnail": "backgrounds/merlion-marina-bay-placeholder.svg",
+      "aspectRatio": "9:16",
+      "composition": { "subjectAnchorX": 0.42, "subjectAnchorY": 0.88, "subjectScale": 0.7, "horizonY": 0.58 },
+      "displayOrder": 3,
+      "enabled": true,
+      "placeholder": true
+    },
+    {
+      "id": "peranakan-shophouses",
+      "name": "Peranakan shophouse street",
+      "category": "heritage",
+      "description": "Pastel shophouse terrace.",
+      "image": "backgrounds/peranakan-shophouses-placeholder.svg",
+      "thumbnail": "backgrounds/peranakan-shophouses-placeholder.svg",
+      "aspectRatio": "9:16",
+      "composition": { "subjectAnchorX": 0.5, "subjectAnchorY": 0.9, "subjectScale": 0.76, "horizonY": 0.66 },
+      "displayOrder": 4,
+      "enabled": true,
+      "placeholder": true
+    },
+    {
+      "id": "chinatown-heritage",
+      "name": "Chinatown heritage street",
+      "category": "heritage",
+      "description": "Lantern-lined heritage street.",
+      "image": "backgrounds/chinatown-heritage-placeholder.svg",
+      "thumbnail": "backgrounds/chinatown-heritage-placeholder.svg",
+      "aspectRatio": "9:16",
+      "composition": { "subjectAnchorX": 0.5, "subjectAnchorY": 0.9, "subjectScale": 0.76, "horizonY": 0.66 },
+      "displayOrder": 5,
+      "enabled": true,
+      "placeholder": true
+    },
+    {
+      "id": "heritage-architecture",
+      "name": "Singapore heritage architecture",
+      "category": "heritage",
+      "description": "Colonial-era civic architecture.",
+      "image": "backgrounds/heritage-architecture-placeholder.svg",
+      "thumbnail": "backgrounds/heritage-architecture-placeholder.svg",
+      "aspectRatio": "9:16",
+      "composition": { "subjectAnchorX": 0.5, "subjectAnchorY": 0.89, "subjectScale": 0.74, "horizonY": 0.64 },
+      "displayOrder": 6,
+      "enabled": true,
+      "placeholder": true
+    }
+  ],
+  "frames": [
+    {
+      "id": "lrdt-standard-frame",
+      "name": "Little Red Dot Tours Standard Frame",
+      "version": "1.0.0",
+      "asset": "frames/lrdt-standard-frame.svg",
+      "format": "svg",
+      "targetAspectRatio": "9:16",
+      "photoWindow": { "x": 0.0407, "y": 0.1146, "width": 0.9185, "height": 0.7448 },
+      "branding": {
+        "brandName": "Little Red Dot Tours",
+        "showBrandLogo": true,
+        "showSponsors": true
+      },
+      "sponsorSlots": [
+        {
+          "id": "sponsor-primary",
+          "position": "bottom-left",
+          "asset": "sponsors/primary-placeholder.svg",
+          "enabled": true,
+          "box": { "x": 0.0833, "y": 0.8802, "width": 0.3148, "height": 0.0625 }
+        },
+        {
+          "id": "sponsor-secondary",
+          "position": "bottom-right",
+          "asset": "sponsors/secondary-placeholder.svg",
+          "enabled": true,
+          "box": { "x": 0.6019, "y": 0.8802, "width": 0.3148, "height": 0.0625 }
+        }
+      ],
+      "placeholder": true
+    }
+  ],
+  "defaultFrameId": "lrdt-standard-frame",
+  "output": {
+    "aspectRatio": "9:16",
+    "jpegQuality": 0.93
+  },
+  "delivery": {
+    "linkExpiryHours": 24
+  },
+  "session": {
+    "idleResetSeconds": 60
+  }
+}

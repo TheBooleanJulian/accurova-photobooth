@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 120" width="340" height="120">
+  <rect x="1.5" y="1.5" width="337" height="117" rx="10" fill="none" stroke="#8E1B1B" stroke-width="2" stroke-dasharray="7 6" opacity="0.6"/>
+  <text x="170" y="56" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="20" letter-spacing="5" fill="#8E1B1B">PRIMARY SPONSOR</text>
+  <text x="170" y="84" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="13" letter-spacing="2" fill="#6B5A50">LOGO PLACEHOLDER</text>
+</svg>

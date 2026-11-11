@@ -1,0 +1,23 @@
+{
+  "welcome.title": "小红点之旅",
+  "welcome.tagline": "您的新加坡故事",
+  "welcome.start": "开始",
+  "welcome.language": "语言",
+  "welcome.privacy": "我们只拍摄一张照片用于制作您的纪念照，照片将在 24 小时后自动删除。无需注册或提供个人资料。",
+  "instructions.title": "准备好了吗",
+  "instructions.stand": "请站在标记处，距离屏幕约 3 米。",
+  "instructions.fullBody": "请确保从头到脚都在画面内。",
+  "instructions.continue": "我准备好了",
+  "camera.countdown": "请微笑！",
+  "review.title": "满意这张照片吗？",
+  "review.retake": "重拍",
+  "review.confirm": "使用这张照片",
+  "background.title": "选择您的背景",
+  "background.confirm": "继续",
+  "processing.title": "正在制作您的照片",
+  "result.title": "扫码下载",
+  "result.expiry": "链接 24 小时内有效。",
+  "complete.title": "谢谢！",
+  "error.generic": "出了点问题，请重新开始。",
+  "error.camera": "无法使用相机，请联系工作人员。"
+}

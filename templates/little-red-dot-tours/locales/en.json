@@ -1,0 +1,23 @@
+{
+  "welcome.title": "Little Red Dot Tours",
+  "welcome.tagline": "Your Singapore Story",
+  "welcome.start": "Start",
+  "welcome.language": "Language",
+  "welcome.privacy": "We take one photo to make your souvenir. It is deleted automatically after 24 hours. No account or personal details needed.",
+  "instructions.title": "Get ready",
+  "instructions.stand": "Stand on the marker, about 3 metres from the screen.",
+  "instructions.fullBody": "Make sure we can see you from head to toe.",
+  "instructions.continue": "I'm ready",
+  "camera.countdown": "Smile!",
+  "review.title": "Happy with this photo?",
+  "review.retake": "Retake",
+  "review.confirm": "Use this photo",
+  "background.title": "Choose your backdrop",
+  "background.confirm": "Continue",
+  "processing.title": "Creating your photo",
+  "result.title": "Scan to download",
+  "result.expiry": "Your link works for 24 hours.",
+  "complete.title": "Thank you!",
+  "error.generic": "Something went wrong. Please start again.",
+  "error.camera": "We can't reach the camera. Please ask a member of staff."
+}

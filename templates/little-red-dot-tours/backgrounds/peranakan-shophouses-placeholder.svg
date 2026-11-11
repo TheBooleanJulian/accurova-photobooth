@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6e3d3"/>
+      <stop offset="1" stop-color="#e8b7a8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1267" fill="url(#sky)"/>
+  <rect y="1267" width="1080" height="653" fill="#a85c5c"/>
+  <rect y="1267" width="1080" height="6" fill="#ffffff" opacity="0.35"/>
+  <g fill="#ffffff" opacity="0.9" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    <text x="540" y="330" font-size="34" letter-spacing="10">PLACEHOLDER BACKGROUND</text>
+    <text x="540" y="410" font-size="58" font-weight="700">Peranakan shophouse street</text>
+    <text x="540" y="470" font-size="28" opacity="0.85">Replace with a licensed photograph</text>
+  </g>
+</svg>

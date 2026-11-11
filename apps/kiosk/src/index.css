@@ -1,0 +1,37 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #111318;
+  --color-panel: #1a1d24;
+  --color-line: #2c313c;
+  --color-paper: #f4efe6;
+  --color-muted: #9aa1ad;
+  --color-accent: #e0613f;
+  --color-good: #58c08a;
+  --color-warn: #e5b454;
+  --color-bad: #ef6b6b;
+  --font-sans: 'Avenir Next', 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-sans);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+button,
+select {
+  font: inherit;
+  touch-action: manipulation;
+}

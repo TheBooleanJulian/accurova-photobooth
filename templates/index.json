@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "id": "little-red-dot-tours",
+      "name": "Little Red Dot Tours",
+      "enabled": true
+    }
+  ]
+}

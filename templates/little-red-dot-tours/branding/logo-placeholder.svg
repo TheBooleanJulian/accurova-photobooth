@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200">
+  <!-- PLACEHOLDER wordmark. Replace with the client's logo (SVG preferred). -->
+  <circle cx="320" cy="42" r="14" fill="#B3261E"/>
+  <text x="320" y="118" text-anchor="middle" font-family="'Cormorant Garamond', 'Playfair Display', Georgia, serif"
+        font-size="42" font-weight="600" textLength="560" lengthAdjust="spacing" fill="#2B1D1A">LITTLE RED DOT TOURS</text>
+  <text x="320" y="164" text-anchor="middle" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="18" textLength="330" lengthAdjust="spacing" fill="#8E1B1B">YOUR SINGAPORE STORY</text>
+</svg>
