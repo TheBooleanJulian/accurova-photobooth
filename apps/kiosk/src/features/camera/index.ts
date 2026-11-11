@@ -8,4 +8,5 @@ export * from './StreamCaptureProvider';
 export * from './NativeCaptureProvider';
 export * from './SimulatedCaptureProvider';
 export * from './measureImage';
+export * from './compactReport';
 export { CameraPreview } from './CameraPreview';

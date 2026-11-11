@@ -17,6 +17,12 @@ Only measured results go in the tables below. Expectations are marked as such.
 On the tablet, open `/admin/diagnostics` over HTTPS in Safari, in the
 orientation the booth will use (portrait).
 
+**Quick version:** tap **Run full test**, allow the camera, wait about 20
+seconds, then scan the QR code with a phone. The phone opens the results with
+a Copy button. The tablet needs no account and nothing is uploaded: the
+results travel inside the link (`/admin/report#…`). The steps below are the
+manual, more detailed version.
+
 1. Tap **Start camera** with Facing = Front and the largest size. Allow the camera.
 2. Note "Track settings" and "Frame as displayed".
 3. Tap **Probe all sizes** and wait for the table.
@@ -28,9 +34,8 @@ orientation the booth will use (portrait).
    shows the stream restarting.
 9. Add the page to the Home Screen, open it from there, and repeat steps 1 and 4
    (installed mode can behave differently from a Safari tab).
-10. Export the results: **Share report** (AirDrop, Mail, Messages), **Copy report** or
-    **Download report**. If none works, screenshot the **Summary** box at the top;
-    it holds the numbers that decide the capture strategy.
+10. Export the results: scan the **QR code** with a phone (key numbers), or use
+    **Share report**, **Copy report** or **Download report** for the full detail.
 
 ## Results
 
@@ -46,7 +51,7 @@ Operator notes without an exported report:
 
 | Date | Device | What was observed | Still missing |
 | --- | --- | --- | --- |
-| 2026-11-12 | iPad Pro 10.5" (2017) | The diagnostics page selected **stream frames** as the capture method (so ImageCapture is unavailable, as expected). The report could not be exported; the iPad has battery problems. | Stream and capture dimensions, OS version, installed-mode behaviour. Use **Share report** or screenshot the summary box. |
+| 2026-11-12 | iPad Pro 10.5" (2017) | The diagnostics page selected **stream frames** as the capture method (so ImageCapture is unavailable, as expected). The report could not be exported; the iPad has battery problems. | Stream and capture dimensions, OS version, installed-mode behaviour. Use **Run full test** and the QR code. |
 
 ### Simulated / non-target (not evidence about the iPad)
 

@@ -1,4 +1,5 @@
 import type { CaptureMethod, CaptureRecord, QualityVerdict } from '@accurova/shared-types';
+import QRCode from 'qrcode';
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -27,6 +28,7 @@ import {
   type StreamInfo,
   type StreamRequest,
 } from '../features/camera';
+import { encodeForQr, type CompactReport } from '../features/camera/compactReport';
 import { downloadBlob, extensionFor, formatBytes } from '../utils/format';
 
 const OVERRIDE_KEY = 'photobooth.captureProviderOverride';
@@ -36,8 +38,23 @@ const METHOD_LABEL: Record<CaptureMethod, string> = {
   native: 'Native camera (manual)',
 };
 
+type TaggedProbe = ProbeResult & { facing: FacingMode; requestedSize: [number, number] };
+
+interface StreamRun {
+  facing: FacingMode;
+  info: StreamInfo;
+  frame: { width: number; height: number } | null;
+}
+
+const tagProbes = (results: ProbeResult[], facing: FacingMode): TaggedProbe[] =>
+  results.map((r, i) => {
+    const preset = RESOLUTION_PRESETS[i]!;
+    return { ...r, facing, requestedSize: [preset.width, preset.height] };
+  });
+
 interface CaptureEntry {
   id: number;
+  facing: FacingMode;
   record: CaptureRecord;
   verdict: QualityVerdict;
   blob: Blob;
@@ -78,7 +95,10 @@ export function CameraDiagnosticsPage() {
   const [frameSize, setFrameSize] = useState<{ width: number; height: number } | null>(null);
   const [capabilities, setCapabilities] = useState<CameraCapabilities[]>([]);
   const [override, setOverride] = useState<ProviderOverride>(readOverride);
-  const [probes, setProbes] = useState<ProbeResult[]>([]);
+  const [probes, setProbes] = useState<TaggedProbe[]>([]);
+  const [streamRuns, setStreamRuns] = useState<StreamRun[]>([]);
+  const [qrLink, setQrLink] = useState('');
+  const qrCanvas = useRef<HTMLCanvasElement>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [captures, setCaptures] = useState<CaptureEntry[]>([]);
@@ -204,15 +224,17 @@ export function CameraDiagnosticsPage() {
     };
   }, [manager]);
 
-  const runCapture = async (method: CaptureMethod) => {
+  const captureWith = async (provider: CameraCaptureProvider, side: FacingMode) => {
+    const method = provider.method;
     setError(null);
     setBusy(`Capturing with ${METHOD_LABEL[method]}…`);
     const started = performance.now();
     try {
-      const image = await providers[method].capture();
+      const image = await provider.capture();
       const record = toCaptureRecord(image, performance.now() - started);
       const entry: CaptureEntry = {
         id: nextId.current++,
+        facing: side,
         record,
         verdict: evaluateQuality(image.width, image.height),
         blob: image.blob,
@@ -229,6 +251,61 @@ export function CameraDiagnosticsPage() {
       setBusy(null);
     }
   };
+  const runCapture = (method: CaptureMethod) => captureWith(providers[method], facing);
+
+  /** Waits until the preview has a decoded frame, so its real size can be read. */
+  const waitForFrame = async (): Promise<{ width: number; height: number } | null> => {
+    for (let i = 0; i < 60; i++) {
+      const video = videoRef.current;
+      if (video && video.readyState >= 2 && video.videoWidth > 0) {
+        return { width: video.videoWidth, height: video.videoHeight };
+      }
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    return null;
+  };
+
+  /**
+   * One tap: measures the front and then the rear camera (stream, capture,
+   * resolution probe) and leaves the results in the QR code below.
+   */
+  const runFullTest = async () => {
+    const top = RESOLUTION_PRESETS[0]!;
+    const runs: StreamRun[] = [];
+    const probed: TaggedProbe[] = [];
+    setDeviceId('');
+    addLog('Full test started');
+    for (const side of ['user', 'environment'] as const) {
+      const name = side === 'user' ? 'front' : 'rear';
+      setFacing(side);
+      await start({ facingMode: side, width: top.width, height: top.height });
+      if (!manager.isLive()) {
+        addLog(`Full test: ${name} camera unavailable`);
+        continue;
+      }
+      const frame = await waitForFrame();
+      const info = manager.getInfo();
+      if (info) runs.push({ facing: side, info, frame });
+      if (frame) {
+        await captureWith(new StreamCaptureProvider(manager, () => videoRef.current), side);
+        const still = new ImageCaptureProvider(manager);
+        await still.initialize();
+        if ((await still.getCapabilities()).supported) await captureWith(still, side);
+      }
+      wantRunning.current = false;
+      setStream(null);
+      const results = await probeStreamResolutions(manager, { facingMode: side }, RESOLUTION_PRESETS, (done, total) =>
+        setBusy(`Probing ${name} camera ${done}/${total}…`),
+      );
+      probed.push(...tagProbes(results, side));
+    }
+    setStreamRuns(runs);
+    setProbes(probed);
+    setFacing('user');
+    await start({ facingMode: 'user', width: top.width, height: top.height });
+    addLog('Full test finished');
+    qrCanvas.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
 
   const runProbe = async () => {
     setError(null);
@@ -240,7 +317,7 @@ export function CameraDiagnosticsPage() {
       const results = await probeStreamResolutions(manager, base, RESOLUTION_PRESETS, (done, total) =>
         setBusy(`Probing resolutions ${done}/${total}…`),
       );
-      setProbes(results);
+      setProbes((existing) => [...existing.filter((p) => p.facing !== facing), ...tagProbes(results, facing)]);
       addLog(`Probed ${results.length} resolutions`);
     } finally {
       setBusy(null);
@@ -279,6 +356,77 @@ export function CameraDiagnosticsPage() {
     [env, mimeTypes, devices, streamInfo, frameSize, probes, capabilities, selection, override, captures, log],
   );
   const reportJson = useMemo(() => JSON.stringify(report, null, 2), [report]);
+
+  // The same results, condensed to fit a QR code (see compactReport.ts).
+  const compact = useMemo<CompactReport | null>(() => {
+    if (!env) return null;
+    const pair = (size: { width: number; height: number } | null): [number, number] | null =>
+      size ? [size.width, size.height] : null;
+    const live: StreamRun[] =
+      streamRuns.length > 0
+        ? streamRuns
+        : streamInfo
+          ? [{ facing: streamInfo.facingMode === 'environment' ? 'environment' : facing, info: streamInfo, frame: frameSize }]
+          : [];
+    return {
+      v: 1,
+      at: new Date().toISOString().slice(0, 19) + 'Z',
+      userAgent: env.userAgent,
+      deviceHint: env.deviceHint,
+      secure: env.secureContext,
+      imageCapture: env.hasImageCapture,
+      nativeInput: env.hasNativeCaptureInput,
+      wakeLock: env.hasWakeLock,
+      standalone: env.standalone,
+      permission: env.cameraPermission,
+      screen: [env.screen.width, env.screen.height, env.screen.devicePixelRatio],
+      orientation: env.orientation,
+      encoders: mimeTypes.map((m) => m.replace('image/', '')),
+      cameras: devices.map((d) => d.label.replace(/ \(label hidden.*$/, '')),
+      use: selection.method,
+      streams: live.map((run) => ({
+        facing: run.facing,
+        label: run.info.label,
+        track: [run.info.width, run.info.height],
+        frame: pair(run.frame),
+        fps: run.info.frameRate ? Math.round(run.info.frameRate) : null,
+        max: run.info.maxWidth && run.info.maxHeight ? [run.info.maxWidth, run.info.maxHeight] : null,
+      })),
+      probes: probes.map((p) => ({
+        facing: p.facing,
+        requested: p.requestedSize,
+        delivered: [p.width, p.height],
+        fps: p.frameRate ? Math.round(p.frameRate) : null,
+        ...(p.error ? { error: p.error.split(':')[0] } : {}),
+      })),
+      captures: [...captures].reverse().map((c) => ({
+        facing: c.facing,
+        method: c.record.captureMethod,
+        size: [c.record.width, c.record.height],
+        bytes: c.record.fileSize,
+        ms: c.record.latencyMs,
+        mime: c.record.mimeType.replace('image/', ''),
+        verdict: c.verdict,
+      })),
+      events: log.slice(-12).map((entry) => `${entry.at.slice(11, 19)} ${entry.message}`),
+    };
+  }, [env, mimeTypes, devices, selection.method, streamRuns, streamInfo, frameSize, facing, probes, captures, log]);
+
+  useEffect(() => {
+    if (!compact) return;
+    let cancelled = false;
+    void encodeForQr(compact, `${location.origin}/admin/report`).then((link) => !cancelled && setQrLink(link));
+    return () => {
+      cancelled = true;
+    };
+  }, [compact]);
+
+  useEffect(() => {
+    if (!qrLink || !qrCanvas.current) return;
+    QRCode.toCanvas(qrCanvas.current, qrLink, { errorCorrectionLevel: 'L', margin: 3, width: 640 }).catch(() =>
+      setError('The results are too large for a QR code. Screenshot the summary instead.'),
+    );
+  }, [qrLink]);
 
   const copyReport = async () => {
     try {
@@ -350,9 +498,23 @@ export function CameraDiagnosticsPage() {
         </div>
       </header>
 
-      <section className="rounded-2xl border border-accent/50 bg-panel p-4">
-        <h2 className="mb-2 text-sm tracking-widest text-muted uppercase">Summary (screenshot this if you can’t export)</h2>
-        <p className="font-mono text-base leading-relaxed select-all sm:text-lg">{summary}</p>
+      <section className="flex flex-col gap-4 rounded-2xl border border-accent/50 bg-panel p-4">
+        <div>
+          <Button primary onClick={runFullTest} disabled={busy !== null}>
+            Run full test
+          </Button>
+          <p className="mt-2 text-sm text-muted">
+            Measures the front and rear cameras in one go (about 20 seconds), then updates the code.
+          </p>
+          <h2 className="mt-4 mb-1 text-sm tracking-widest text-muted uppercase">Summary</h2>
+          <p className="font-mono text-base leading-relaxed select-all">{summary}</p>
+          <p className="mt-3 text-sm text-muted">
+            <strong className="text-paper">Scan the code with a phone camera</strong> to open these results on the
+            phone, with a Copy button. Nothing is uploaded: the results travel inside the link. The code carries the
+            key numbers; the full detail stays in “Download report”.
+          </p>
+        </div>
+        <canvas ref={qrCanvas} aria-label="QR code with the results" className="mx-auto h-auto w-full max-w-[40rem] rounded-lg bg-white" />
       </section>
 
       {error && (
@@ -537,7 +699,7 @@ export function CameraDiagnosticsPage() {
           <Table
             head={['Requested', 'Delivered']}
             rows={probes.map((p) => [
-              p.requested,
+              `${p.facing === 'user' ? 'Front' : 'Rear'} · ${p.requested}`,
               p.error ? p.error : `${p.width} × ${p.height}${p.frameRate ? ` @ ${Math.round(p.frameRate)} fps` : ''}`,
             ])}
           />

@@ -19,7 +19,7 @@ cd services/api && python -m pytest
 
 ## Current coverage
 
-Frontend, 112 tests:
+Frontend, 119 tests:
 - `CameraManager`: delivered vs requested settings, cleanup, superseded starts,
   error mapping, insecure context, track events, restart.
 - Providers: stream frame sizing and labelling, MIME reporting, not-ready
@@ -27,6 +27,7 @@ Frontend, 112 tests:
   fallback, rebinding after restart; native capture and cancellation.
 - Diagnostics: provider selection and override, quality verdicts, capture
   records, resolution probe, device helpers.
+- Compact report: round trip, QR size budget, probe de-duplication, damaged links.
 - API client: request shapes, error mapping, job polling, timeout and abort.
 - Image engine: sizes, cover crop, logo fitting, subject placement and its
   limits, layer order and clipping (recorded canvas calls), JPEG export.
