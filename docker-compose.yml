@@ -9,6 +9,8 @@ services:
     environment:
       PHOTOBOOTH_CORS_ORIGINS: http://localhost:5173
       PHOTOBOOTH_ADMIN_TOKEN: ${PHOTOBOOTH_ADMIN_TOKEN:-}
+      # Development only: a synthetic silhouette, not a real model.
+      PHOTOBOOTH_SEGMENTATION_PROVIDER: mock
     volumes:
       - api-data:/srv/services/api/data
 

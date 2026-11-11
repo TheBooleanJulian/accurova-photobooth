@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { CameraDiagnosticsPage } from '../pages/CameraDiagnosticsPage';
+import { DownloadPage } from '../pages/DownloadPage';
 import { HomePage } from '../pages/HomePage';
 import { KioskWelcomePage } from '../pages/KioskWelcomePage';
 
@@ -12,6 +13,7 @@ export function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/kiosk/:templateId" element={<KioskWelcomePage />} />
+      <Route path="/d/:token" element={<DownloadPage />} />
       <Route path="/admin" element={<Navigate to="/admin/diagnostics" replace />} />
       <Route path="/admin/diagnostics" element={<CameraDiagnosticsPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />

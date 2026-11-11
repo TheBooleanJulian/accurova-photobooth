@@ -17,6 +17,22 @@ Nothing here is applied automatically. Each needs an account you control.
 
 No CORS configuration is needed: browsers never talk to R2, only the API does.
 
+## Segmentation service (GPU inference)
+
+The API talks to any endpoint that honours this contract
+(`PHOTOBOOTH_SEGMENTATION_PROVIDER=http`, `PHOTOBOOTH_SEGMENTATION_URL`,
+`PHOTOBOOTH_SEGMENTATION_API_KEY`):
+
+- Request: `POST <url>`, body = JPEG bytes, `Content-Type: image/jpeg`,
+  `Authorization: Bearer <key>` when a key is set.
+- Response: `200` with a PNG. Its alpha channel is the mask (or its grey value
+  if it has no alpha). Any size; the API scales it to the photograph.
+
+So whichever provider hosts BiRefNet (or another model), wrap it in an
+endpoint of this shape. No inference server is included in this repository
+yet, because its form depends on the provider you choose. Target: a mask
+back within about 10 seconds, with a warm instance during events.
+
 ## Supabase (session metadata)
 
 Create a project in Singapore and keep the URL and service-role key.

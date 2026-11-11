@@ -39,6 +39,14 @@ a client is therefore a content change, not a code change or a new build
   only; full validation lives in the TypeScript schema to avoid two diverging
   definitions.
 
+## Processing split
+
+The API segments; the kiosk composites. The kiosk uploads the original
+capture, the API returns a lossless RGBA foreground plus the subject's pixel
+bounds, the kiosk draws background + foreground + frame on a canvas and
+uploads the finished JPEG, which the API stores and serves through an
+expiring token. See `API_REFERENCE.md`.
+
 ## Planned modules (not built)
 
 `features/capture`, `segmentation`, `backgrounds`, `compositing`, `frames`,

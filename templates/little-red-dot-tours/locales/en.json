@@ -19,5 +19,11 @@
   "result.expiry": "Your link works for 24 hours.",
   "complete.title": "Thank you!",
   "error.generic": "Something went wrong. Please start again.",
-  "error.camera": "We can't reach the camera. Please ask a member of staff."
+  "error.camera": "We can't reach the camera. Please ask a member of staff.",
+  "download.title": "Your photo is ready",
+  "download.save": "Save photo",
+  "download.share": "Share",
+  "download.hint": "You can also press and hold the photo to save it.",
+  "download.expires": "Available until {time}",
+  "download.invalid": "This link is invalid or has expired."
 }

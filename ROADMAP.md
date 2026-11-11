@@ -33,8 +33,11 @@ Preview, positioning guide, countdown, still capture, review/retake; session
 store (Zustand + IndexedDB); Wake Lock; recovery from reload and tab suspension.
 
 ## M3 — Segmentation ⬜
-Local MediaPipe preview checks; cloud segmentation behind a provider interface
-(mock adapter first); choose GPU provider and API host (ADR needed).
+- ✅ Built early (backend): capture upload, idempotent segmentation jobs with
+  retry and stall timeout, provider interface with `mock` and generic `http` adapters
+- ⬜ Real model behind the `http` contract (needs a GPU provider), mask edge refinement
+- ⬜ Local MediaPipe preview checks in the kiosk
+- ⬜ Choose GPU provider and API host (ADR needed)
 
 ## M4 — Background compositing ⬜
 Background selection UI, composition metadata, colour matching, export.
@@ -45,8 +48,10 @@ SVG/PNG adapters, sponsor slots, final rendering, validated asset replacement
 
 ## M6 — Visitor application ⬜
 Full kiosk flow, EN/中文, QR code + download page, auto reset.
-- ✅ Built early (backend only): sessions, final-image upload, expiring download
-  tokens, retention cleanup, rate limiting, local + R2 storage adapters
+- ✅ Built early: sessions, final-image upload, expiring download tokens,
+  retention cleanup, rate limiting, local + R2 storage adapters, typed API
+  client, visitor download page `/d/<token>` (EN/中文, save and share)
+- ✅ API container published to GHCR by GitHub Actions
 - ⬜ Supabase adapter (schema ready in `infra/supabase`), R2 verified against a real bucket
 
 ## M7 — Administration ⬜

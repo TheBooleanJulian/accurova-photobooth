@@ -11,6 +11,7 @@ backstop in case this job ever stops running.
 from dataclasses import asdict, dataclass
 from datetime import datetime
 
+from .jobs import JobStore, delete_intermediates
 from .sessions import SessionStore, utcnow
 from .storage import ObjectStorage
 
@@ -22,10 +23,14 @@ class CleanupReport:
     errors: int = 0
 
 
-def cleanup_expired(sessions: SessionStore, storage: ObjectStorage, now: datetime) -> CleanupReport:
+def cleanup_expired(
+    sessions: SessionStore, storage: ObjectStorage, now: datetime, jobs: JobStore | None = None
+) -> CleanupReport:
     report = CleanupReport()
     for session in sessions.expired(now):
         try:
+            if jobs is not None:
+                delete_intermediates(session.id, jobs, storage)
             if session.result_key:
                 storage.delete(session.result_key)
                 report.images_deleted += 1
@@ -42,4 +47,7 @@ if __name__ == "__main__":
     from .storage import build_storage
 
     settings = Settings()
-    print(asdict(cleanup_expired(SessionStore(settings.database_path), build_storage(settings), utcnow())))
+    report = cleanup_expired(
+        SessionStore(settings.database_path), build_storage(settings), utcnow(), JobStore(settings.database_path)
+    )
+    print(asdict(report))

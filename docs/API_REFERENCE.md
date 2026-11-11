@@ -1,9 +1,13 @@
 # API reference
 
 Base: the FastAPI service in `services/api`. Interactive docs at `/docs` when running.
-Endpoints from the master prompt that are **not built yet**: `/api/capture`,
-`/api/process`, `/api/process/{job_id}`, `/api/backgrounds`, `/api/frames`,
-`/api/admin/diagnostics`, and the admin upload endpoints.
+Not built yet: `/api/admin/diagnostics` and the admin upload endpoints.
+`/api/backgrounds` and `/api/frames` are covered by `/api/templates/{id}`,
+which returns both. Capture and processing are scoped to a session
+(`/api/session/{id}/capture`, `/api/session/{id}/process`) rather than the
+flat paths the prompt suggested, so every upload belongs to exactly one session.
+
+Typed client for the kiosk: `apps/kiosk/src/services/api.ts`.
 
 ## Health and templates
 
@@ -25,6 +29,30 @@ Endpoints from the master prompt that are **not built yet**: `/api/capture`,
 Upload rules: bytes are inspected, not the content type. 400 empty, 415 not a
 valid JPEG, 413 over `PHOTOBOOTH_MAX_UPLOAD_MB` or over the maximum edge.
 
+## Capture and processing
+
+| Method | Path | Notes |
+| --- | --- | --- |
+| PUT | `/api/session/{id}/capture` | Raw JPEG body: the original capture, stored byte for byte. A second upload is a retake and discards the previous job and foreground. 409 once the session has its final photo. |
+| POST | `/api/session/{id}/process` | 202 with the job. Idempotent: the same job is returned while it runs or after it finishes. A failed job is retried, up to `PHOTOBOOTH_MAX_JOB_ATTEMPTS` (3). 503 when no segmentation provider is configured, 409 without a capture. |
+| GET | `/api/process/{job_id}` | `{jobId, status, error, attempts, provider, width, height, subjectBox, foregroundUrl}` |
+| GET | `/api/process/{job_id}/foreground` | Lossless RGBA PNG at the photograph's full size, EXIF rotation applied. 409 until done. |
+
+Job status: `queued` → `segmenting` → `done` or `failed`.
+Error codes: `timeout`, `no-subject`, `capture-missing`, `provider-error`,
+`provider-unreachable`, `internal-error`. A job with no progress for
+`PHOTOBOOTH_JOB_TIMEOUT_SECONDS` (120) is failed with `timeout` when next read.
+
+`subjectBox` is `[left, top, right, bottom]` in pixels: the kiosk uses it with
+the background's composition metadata to place and scale the visitor.
+
+Lifecycle of files: the original is deleted after successful processing
+(unless `PHOTOBOOTH_RETAIN_ORIGINALS=true`); the foreground and job are deleted
+when the final photo is uploaded, on retake, or when the session expires.
+
+The pipeline division: the API segments; the kiosk composites background,
+foreground and frame on a canvas and uploads the finished JPEG.
+
 ## Delivery
 
 | Method | Path | Notes |
@@ -36,7 +64,7 @@ Wrong, expired and deleted links all return the same 404. Tokens are 256-bit
 random values; only their SHA-256 is stored. Links expire after
 `PHOTOBOOTH_LINK_EXPIRY_HOURS` (24).
 
-The QR code will point at a kiosk-site page (`/d/{token}`, M6) that calls
+The QR code points at the kiosk-site page `/d/{token}` (built), which calls
 these two endpoints; storage paths and session ids are never exposed.
 
 ## Administration

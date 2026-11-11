@@ -59,6 +59,17 @@ The kiosk does not call the API yet, so nothing needs hosting until M3.
 Set `PHOTOBOOTH_ADMIN_TOKEN` and schedule retention every 15 minutes:
 `python -m app.retention`, or `POST /api/admin/cleanup` with the bearer token.
 
+The image is also built, smoke-tested and published by GitHub Actions
+(`.github/workflows/api-image.yml`) to
+`ghcr.io/thebooleanjulian/accurova-photobooth-api:latest` on every change to
+the API or templates, so a host can pull it directly. The package is private
+by default; make it public or give the host a pull token.
+
+Once the API has an address, set `VITE_API_BASE_URL` for the kiosk build
+(Cloudflare → Worker → Settings → Build → Variables) and redeploy, and add the
+kiosk origins to `PHOTOBOOTH_CORS_ORIGINS` if they differ from the defaults.
+Until then the download page `/d/<token>` reports an invalid link.
+
 ## 4. To prepare in your own accounts
 
 Step-by-step for R2 and Supabase: `infra/README.md`. The R2 adapter exists and

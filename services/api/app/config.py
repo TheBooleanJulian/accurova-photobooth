@@ -13,7 +13,10 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="PHOTOBOOTH_", env_file=".env", extra="ignore")
 
     templates_dir: Path = REPO_ROOT / "templates"
-    cors_origins: str = "http://localhost:5173"
+    cors_origins: str = (
+        "http://localhost:5173,https://photobooth.accurova.com,"
+        "https://accurova-photobooth.juliancheung.workers.dev"
+    )
 
     # Where session metadata lives. SQLite today; a Supabase adapter follows
     # once a project exists (schema: infra/supabase/migrations).
@@ -33,6 +36,17 @@ class Settings(BaseSettings):
     max_upload_mb: float = 25
     max_image_edge_px: int = 12000
     rate_limit_per_minute: int = 30
+
+    # Segmentation. "none" refuses processing; "mock" is for development only.
+    segmentation_provider: Literal["none", "mock", "http"] = "none"
+    segmentation_url: str = ""
+    segmentation_api_key: str = ""
+    segmentation_timeout_seconds: float = 60
+    # A job with no progress for this long is failed so the kiosk can recover.
+    job_timeout_seconds: float = 120
+    max_job_attempts: int = 3
+    # Originals are deleted after successful processing unless retention is authorised.
+    retain_originals: bool = False
 
     # Bearer token for /api/admin/* (except health). Admin endpoints are
     # disabled while this is empty.
