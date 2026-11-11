@@ -21,6 +21,8 @@ npm run build        # type-check + production build to apps/kiosk/dist
 | --- | --- |
 | `/` | Operator start page |
 | `/admin/diagnostics` | Camera diagnostics (M1) |
+| `/admin/compose` | Preview of the final image: background, stand-in visitor, frame |
+| `/d/<token>` | Visitor download page |
 | `/kiosk/little-red-dot-tours` | Template-driven welcome screen |
 
 API (templates, sessions, delivery; the kiosk does not call it yet):
@@ -50,6 +52,7 @@ and use **Download report** to save the results.
 apps/kiosk/              React + Vite PWA (visitor kiosk and admin tools)
   src/features/camera/   Device-agnostic camera subsystem
 packages/template-engine Template schema (zod) and runtime registry
+packages/image-engine    Placement maths and canvas compositor
 packages/shared-types    Contracts shared by kiosk and API
 services/api/            FastAPI service
 templates/               One folder per client; loaded at runtime
@@ -60,6 +63,7 @@ docs/                    Architecture, camera notes, ADRs
 
 - [Architecture](docs/ARCHITECTURE.md)
 - [Camera architecture](docs/CAMERA_ARCHITECTURE.md) and [compatibility log](docs/CAMERA_COMPATIBILITY.md)
+- [Compositing](docs/COMPOSITING.md) and [frame system](docs/FRAME_SYSTEM.md)
 - [Template development](docs/TEMPLATE_DEVELOPMENT.md)
 - [Testing](docs/TESTING.md)
 - [Deployment](docs/DEPLOYMENT.md) and [infrastructure setup](infra/README.md)

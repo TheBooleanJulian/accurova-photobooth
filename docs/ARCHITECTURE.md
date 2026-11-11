@@ -49,9 +49,10 @@ expiring token. See `API_REFERENCE.md`.
 
 ## Planned modules (not built)
 
-`features/capture`, `segmentation`, `backgrounds`, `compositing`, `frames`,
-`delivery`, `session`, and `packages/image-engine`. Each will sit behind an
-interface with a mock adapter first, as the camera providers do.
+`features/capture`, `features/session`, kiosk-side segmentation preview and
+the visitor screens. Built since M1: `packages/image-engine`
+(`COMPOSITING.md`), `features/frames` (`FRAME_SYSTEM.md`),
+`features/backgrounds`, `features/compositing`, `services/api.ts`.
 
 ## Conventions
 

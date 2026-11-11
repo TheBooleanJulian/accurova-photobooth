@@ -113,7 +113,11 @@ export const templateSchema = z
     defaultFrameId: slug,
     output: z.object({
       aspectRatio,
+      /** Longest edge of the final JPEG in pixels. 1920 gives 1080×1920 at 9:16. */
+      longestEdge: z.number().int().min(640).max(8000).default(1920),
       jpegQuality: z.number().min(0.5).max(1).default(0.93),
+      /** Soft contact shadow under the visitor's feet. 0 disables it. */
+      shadowOpacity: z.number().min(0).max(1).default(0.28),
     }),
     delivery: z.object({
       linkExpiryHours: z.number().positive().default(24),

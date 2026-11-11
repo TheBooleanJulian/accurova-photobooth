@@ -57,6 +57,13 @@ export function HomePage() {
           <span>Camera diagnostics</span>
           <span className="font-mono text-sm text-muted">/admin/diagnostics</span>
         </Link>
+        <Link
+          to="/admin/compose"
+          className="mt-3 flex min-h-16 items-center justify-between rounded-xl border border-line bg-panel px-5 text-lg"
+        >
+          <span>Composite preview</span>
+          <span className="font-mono text-sm text-muted">/admin/compose</span>
+        </Link>
       </section>
     </main>
   );

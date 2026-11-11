@@ -24,7 +24,7 @@ templates/
 5. Run `npm test`. One test validates every template on disk: schema, that
    every referenced asset exists, that locales have identical keys, and that
    frame boxes stay inside the frame.
-6. Open `/kiosk/<new-id>`.
+6. Open `/kiosk/<new-id>`, and `/admin/compose` to see the final image for each background.
 
 ## `template.json` reference
 
@@ -40,7 +40,9 @@ The authoritative definition is `packages/template-engine/src/schema.ts`.
 | `backgrounds[].composition` | `subjectAnchorX/Y` = where the subject's feet go; `subjectScale` = subject height as a fraction of the background; `horizonY` optional |
 | `frames[].photoWindow` | The transparent area of the frame, normalised to the frame |
 | `frames[].sponsorSlots[].box` | Box each sponsor logo is fitted into, aspect ratio preserved |
+| `output.longestEdge` | Longest edge of the final JPEG, default 1920 |
 | `output.jpegQuality` | 0.5–1, default 0.93 |
+| `output.shadowOpacity` | Contact shadow under the visitor, default 0.28, 0 = off |
 | `delivery.linkExpiryHours` | Default 24 |
 
 All coordinates are normalised 0..1. All asset paths are relative to the

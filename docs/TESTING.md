@@ -19,7 +19,7 @@ cd services/api && python -m pytest
 
 ## Current coverage
 
-Frontend, 70 tests:
+Frontend, 112 tests:
 - `CameraManager`: delivered vs requested settings, cleanup, superseded starts,
   error mapping, insecure context, track events, restart.
 - Providers: stream frame sizing and labelling, MIME reporting, not-ready
@@ -28,6 +28,10 @@ Frontend, 70 tests:
 - Diagnostics: provider selection and override, quality verdicts, capture
   records, resolution probe, device helpers.
 - API client: request shapes, error mapping, job polling, timeout and abort.
+- Image engine: sizes, cover crop, logo fitting, subject placement and its
+  limits, layer order and clipping (recorded canvas calls), JPEG export.
+- Frames: SVG safety rules, PNG transparency, geometry, window transparency,
+  engine loading, sponsor handling, last-good fallback; background selection.
 - Template engine: every template on disk (schema, assets, locale parity,
   frame geometry), schema rejections, registry loading, caching and errors.
 
@@ -44,6 +48,7 @@ HTTP provider against a simulated transport (not a real inference service).
 
 ## Not yet covered
 
-Component tests for the pages, the end-to-end visitor flow (M6), and anything
-involving compositing or frames. No real segmentation model has been run. R2 and Supabase have not been
+Component tests for the pages and the end-to-end visitor flow (M6). The
+compositor's pixel output is checked by eye in `/admin/compose`, not by an
+automated image comparison. No real segmentation model has been run. R2 and Supabase have not been
 exercised against real services.

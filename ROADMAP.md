@@ -39,12 +39,17 @@ store (Zustand + IndexedDB); Wake Lock; recovery from reload and tab suspension.
 - ⬜ Local MediaPipe preview checks in the kiosk
 - ⬜ Choose GPU provider and API host (ADR needed)
 
-## M4 — Background compositing ⬜
-Background selection UI, composition metadata, colour matching, export.
+## M4 — Background compositing 🟡
+- ✅ Image engine: placement from composition metadata, cover crop, contact shadow, single JPEG export
+- ✅ Background library (enabled, ordered, safe fallback) and `/admin/compose` preview tool
+- ⬜ Visitor background selection screen, colour matching
 
-## M5 — Frame engine ⬜
-SVG/PNG adapters, sponsor slots, final rendering, validated asset replacement
-(including SVG sanitising and font embedding).
+## M5 — Frame engine 🟡
+- ✅ SVG and PNG adapters, sponsor slots, frame baked into the exported JPEG
+- ✅ Validation: unsafe SVG refused, PNG transparency, geometry, photo-window transparency
+- ✅ Last-good fallback when a replacement frame fails
+- ⬜ Final artwork from the client (placeholder still in use), text outlined
+- ⬜ Admin upload and activation UI (M7)
 
 ## M6 — Visitor application ⬜
 Full kiosk flow, EN/中文, QR code + download page, auto reset.
@@ -62,6 +67,6 @@ calibration, health, kiosk reset.
 Hosting, retention jobs, PDPA review, physical reliability testing.
 
 ## Documentation still to write (with their milestones)
-CAMERA_SETUP (M2), SEGMENTATION + IMAGE_PROCESSING (M3), COMPOSITING (M4),
-FRAME_SYSTEM + BRAND_ASSET_GUIDE (M5), API_REFERENCE + DATABASE_SCHEMA (M6),
+CAMERA_SETUP (M2), SEGMENTATION + IMAGE_PROCESSING (M3), BRAND_ASSET_GUIDE (M5),
+DATABASE_SCHEMA (M6),
 PRIVACY (M8). DEPLOYMENT exists and grows with each milestone.

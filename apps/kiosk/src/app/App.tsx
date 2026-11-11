@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { CameraDiagnosticsPage } from '../pages/CameraDiagnosticsPage';
+import { ComposePreviewPage } from '../pages/ComposePreviewPage';
 import { DownloadPage } from '../pages/DownloadPage';
 import { HomePage } from '../pages/HomePage';
 import { KioskWelcomePage } from '../pages/KioskWelcomePage';
@@ -16,6 +17,7 @@ export function App() {
       <Route path="/d/:token" element={<DownloadPage />} />
       <Route path="/admin" element={<Navigate to="/admin/diagnostics" replace />} />
       <Route path="/admin/diagnostics" element={<CameraDiagnosticsPage />} />
+      <Route path="/admin/compose" element={<ComposePreviewPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
