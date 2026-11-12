@@ -80,15 +80,25 @@ def create_app(
     settings: Settings | None = None,
     storage: ObjectStorage | None = None,
     segmentation: SegmentationProvider | None = None,
+    database: tuple | None = None,
 ) -> FastAPI:
     settings = settings or Settings()
+    if database is not None:
+        sessions, jobs = database
+    elif settings.database_backend == "supabase":
+        from .supabase import SupabaseJobStore, SupabaseSessionStore, build_client
+
+        client = build_client(settings)
+        sessions, jobs = SupabaseSessionStore(client), SupabaseJobStore(client)
+    else:
+        sessions, jobs = SessionStore(settings.database_path), JobStore(settings.database_path)
     services = Services(
         settings=settings,
         templates=TemplateStore(settings.templates_dir),
-        sessions=SessionStore(settings.database_path),
+        sessions=sessions,
         storage=storage or build_storage(settings),
         limiter=RateLimiter(settings.rate_limit_per_minute),
-        jobs=JobStore(settings.database_path),
+        jobs=jobs,
         segmentation=segmentation or build_segmentation(settings),
     )
 
@@ -122,7 +132,7 @@ def create_app(
             "templates": count,
             "services": {
                 "storage": services.storage.status(),
-                "database": "local",
+                "database": getattr(services.sessions, "status", lambda: "local")(),
                 "segmentation": services.segmentation.status() if services.segmentation else "not-configured",
             },
         }

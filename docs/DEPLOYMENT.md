@@ -51,8 +51,15 @@ docker run -p 8000:8000 -e PHOTOBOOTH_CORS_ORIGINS=https://<kiosk-origin> accuro
 
 Or `docker compose up` for a local instance with a persistent volume.
 
-Any container host works (it listens on `$PORT`). It needs a persistent
-volume at `/srv/services/api/data` while it uses SQLite and local storage.
+Any container host works (it listens on `$PORT`). Two ways to run it:
+
+| Mode | Settings | Needs |
+| --- | --- | --- |
+| Stateful (default) | SQLite + local files | A persistent volume at `/srv/services/api/data`, one instance |
+| Stateless | `PHOTOBOOTH_DATABASE_BACKEND=supabase` + `PHOTOBOOTH_STORAGE_BACKEND=r2` | No volume; any number of instances |
+
+Stateless is the easier one to host: any service that runs a container from
+`ghcr.io` will do.
 The kiosk does not call the API yet, so nothing needs hosting until M3.
 **Decision needed before M3:** which host. Record it as an ADR.
 
@@ -85,7 +92,16 @@ switches on with environment variables; Supabase is schema-only so far.
 Credentials go in the host's secret store and in a local `.env` (see
 `.env.example`), never in the repository.
 
-## 5. Tablet setup for a booth (to verify in M1/M8)
+## 5. Protecting the admin pages
+
+`/admin/*` is part of the static site and is not password-protected by the
+application. The simplest protection needs no code: Cloudflare Zero Trust →
+Access → Applications → add a self-hosted application for
+`photobooth.accurova.com/admin*` with a policy allowing your email address.
+Visitors to `/kiosk/*` and `/d/*` are unaffected. On a booth tablet you sign
+in once with a one-time code sent to that email.
+
+## 6. Tablet setup for a booth (to verify in M1/M8)
 
 - Settings → Display & Brightness → Auto-Lock → Never, while on external power.
 - Settings → Accessibility → Guided Access, to pin Safari or the Home Screen app.

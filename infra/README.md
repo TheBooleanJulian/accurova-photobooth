@@ -35,6 +35,16 @@ back within about 10 seconds, with a warm instance during events.
 
 ## Supabase (session metadata)
 
-Create a project in Singapore and keep the URL and service-role key.
-`supabase/migrations/0001_sessions.sql` is the schema. The API still uses
-SQLite; the Supabase adapter is not written yet.
+1. Create a project in the Singapore region.
+2. In the SQL editor, run `supabase/migrations/0001_sessions.sql` and then
+   `0002_jobs.sql`.
+3. Give the API: `PHOTOBOOTH_DATABASE_BACKEND=supabase`, `PHOTOBOOTH_SUPABASE_URL`
+   (the project URL) and `PHOTOBOOTH_SUPABASE_SERVICE_KEY` (the service-role
+   key; never put it in the kiosk).
+4. `GET /api/admin/health` then reports `"database": "connected"`.
+
+The adapter is written and tested against an in-memory emulator of Supabase's
+REST interface. It has not yet run against a real project.
+
+With Supabase and R2 both configured, the API stores nothing on its own disk,
+so it needs no persistent volume and can run as several instances.

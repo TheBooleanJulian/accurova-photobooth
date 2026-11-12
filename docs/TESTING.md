@@ -19,7 +19,7 @@ cd services/api && python -m pytest
 
 ## Current coverage
 
-Frontend, 119 tests:
+Frontend, 155 tests:
 - `CameraManager`: delivered vs requested settings, cleanup, superseded starts,
   error mapping, insecure context, track events, restart.
 - Providers: stream frame sizing and labelling, MIME reporting, not-ready
@@ -28,6 +28,11 @@ Frontend, 119 tests:
 - Diagnostics: provider selection and override, quality verdicts, capture
   records, resolution probe, device helpers.
 - Compact report: round trip, QR size budget, probe de-duplication, damaged links.
+- Session: every transition, ignored events, failures, resume-after-reload rules,
+  persistence of the untouched capture, broken storage.
+- Kiosk: idle timer, wake lock (acquire, re-acquire, refusal), delivery QR.
+- Pipeline: step order, session reuse and renewal, retries with backoff, error
+  mapping to retry/retake, cancellation.
 - API client: request shapes, error mapping, job polling, timeout and abort.
 - Image engine: sizes, cover crop, logo fitting, subject placement and its
   limits, layer order and clipping (recorded canvas calls), JPEG export.
@@ -36,7 +41,7 @@ Frontend, 119 tests:
 - Template engine: every template on disk (schema, assets, locale parity,
   frame geometry), schema rejections, registry loading, caching and errors.
 
-API, 50 tests: health honesty, template listing/retrieval, unsafe ids, disabled
+API, 55 tests: health honesty, template listing/retrieval, unsafe ids, disabled
 and invalid templates; the full delivery flow, byte-for-byte download, token
 randomness and hashing, upload rejection (empty, non-image, PNG, truncated,
 oversized), retry revoking the old link, session and link expiry, cleanup and
@@ -45,7 +50,9 @@ and the R2 adapter against a fake client (not a real bucket); processing:
 refusal when unconfigured, the full job flow with the mock provider,
 idempotent start, retake, bounded retries, empty masks, mask rescaling, EXIF
 rotation, stall timeout, original retention, intermediate deletion, and the
-HTTP provider against a simulated transport (not a real inference service).
+HTTP provider against a simulated transport (not a real inference service);
+the Supabase stores and the whole API on them, against an in-memory emulator
+(not a real Supabase project).
 
 ## Not yet covered
 

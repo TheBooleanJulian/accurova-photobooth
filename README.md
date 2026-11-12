@@ -67,6 +67,7 @@ docs/                    Architecture, camera notes, ADRs
 - [Compositing](docs/COMPOSITING.md) and [frame system](docs/FRAME_SYSTEM.md)
 - [Template development](docs/TEMPLATE_DEVELOPMENT.md)
 - [Testing](docs/TESTING.md)
+- [Privacy](docs/PRIVACY.md)
 - [Deployment](docs/DEPLOYMENT.md) and [infrastructure setup](infra/README.md)
 - [API reference](docs/API_REFERENCE.md)
 - [Review of the master prompt](docs/PROMPT_REVIEW.md)

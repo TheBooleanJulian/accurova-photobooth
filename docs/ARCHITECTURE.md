@@ -47,10 +47,25 @@ bounds, the kiosk draws background + foreground + frame on a canvas and
 uploads the finished JPEG, which the API stores and serves through an
 expiring token. See `API_REFERENCE.md`.
 
+## Kiosk session infrastructure
+
+- `features/session/sessionMachine.ts`: the visitor flow as a pure state
+  machine; invalid events are ignored. `resumeSession()` decides where to
+  continue after a reload (never a stage whose inputs are gone, never a stale session).
+- `features/session/sessionStore.ts`: Zustand store over the machine,
+  persisting state and the untouched capture to IndexedDB.
+- `features/processing/pipeline.ts`: session → upload → segment → compose →
+  deliver, with retries; failures say whether to retry or retake.
+- `features/kiosk`: `WakeLockController` (best-effort, re-acquires on return)
+  and `IdleTimer` (resets abandoned sessions).
+- `features/delivery/qr.ts`: the QR code for the download link.
+
+The screens that drive these are not built yet.
+
 ## Planned modules (not built)
 
-`features/capture`, `features/session`, kiosk-side segmentation preview and
-the visitor screens. Built since M1: `packages/image-engine`
+`features/capture` (countdown, positioning guide), kiosk-side segmentation
+preview and the visitor screens. Built since M1: `packages/image-engine`
 (`COMPOSITING.md`), `features/frames` (`FRAME_SYSTEM.md`),
 `features/backgrounds`, `features/compositing`, `services/api.ts`.
 

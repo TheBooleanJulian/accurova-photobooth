@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     # Where session metadata lives. SQLite today; a Supabase adapter follows
     # once a project exists (schema: infra/supabase/migrations).
     database_path: Path = API_ROOT / "data" / "photobooth.sqlite3"
+    # "sqlite" keeps metadata on local disk; "supabase" keeps the API stateless.
+    database_backend: Literal["sqlite", "supabase"] = "sqlite"
+    supabase_url: str = ""
+    supabase_service_key: str = ""
 
     # Where final photographs live.
     storage_backend: Literal["local", "r2"] = "local"

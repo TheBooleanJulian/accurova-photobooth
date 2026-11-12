@@ -29,9 +29,10 @@ camera stream reaches the 2000 px minimum is unknown until measured. If it does
 not, choose one of: lower the minimum for this template, use the rear camera
 with an external preview, or use a newer tablet. See `docs/PROMPT_REVIEW.md`.
 
-## M2 — Capture workflow ⬜
-Preview, positioning guide, countdown, still capture, review/retake; session
-store (Zustand + IndexedDB); Wake Lock; recovery from reload and tab suspension.
+## M2 — Capture workflow 🟡
+- ✅ Session state machine, persistent session store (Zustand + IndexedDB), resume-after-reload rules
+- ✅ Wake Lock controller, idle timer for abandoned sessions
+- ⬜ Screens: preview, positioning guide, countdown, capture, review/retake
 
 ## M3 — Segmentation ⬜
 - ✅ Built early (backend): capture upload, idempotent segmentation jobs with
@@ -58,7 +59,8 @@ Full kiosk flow, EN/中文, QR code + download page, auto reset.
   retention cleanup, rate limiting, local + R2 storage adapters, typed API
   client, visitor download page `/d/<token>` (EN/中文, save and share)
 - ✅ API container published to GHCR by GitHub Actions
-- ⬜ Supabase adapter (schema ready in `infra/supabase`), R2 verified against a real bucket
+- ✅ Supabase adapter (stateless API option), processing pipeline orchestrator, delivery QR
+- ⬜ Supabase and R2 verified against real services; visitor screens
 
 ## M7 — Administration ⬜
 Admin authentication, frame/background/sponsor management, lighting
@@ -69,5 +71,4 @@ Hosting, retention jobs, PDPA review, physical reliability testing.
 
 ## Documentation still to write (with their milestones)
 CAMERA_SETUP (M2), SEGMENTATION + IMAGE_PROCESSING (M3), BRAND_ASSET_GUIDE (M5),
-DATABASE_SCHEMA (M6),
-PRIVACY (M8). DEPLOYMENT exists and grows with each milestone.
+DATABASE_SCHEMA (M6). DEPLOYMENT exists and grows with each milestone.

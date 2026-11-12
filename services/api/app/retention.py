@@ -47,7 +47,12 @@ if __name__ == "__main__":
     from .storage import build_storage
 
     settings = Settings()
-    report = cleanup_expired(
-        SessionStore(settings.database_path), build_storage(settings), utcnow(), JobStore(settings.database_path)
-    )
+    if settings.database_backend == "supabase":
+        from .supabase import SupabaseJobStore, SupabaseSessionStore, build_client
+
+        client = build_client(settings)
+        sessions, jobs = SupabaseSessionStore(client), SupabaseJobStore(client)
+    else:
+        sessions, jobs = SessionStore(settings.database_path), JobStore(settings.database_path)
+    report = cleanup_expired(sessions, build_storage(settings), utcnow(), jobs)
     print(asdict(report))
