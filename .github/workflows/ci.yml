@@ -29,3 +29,44 @@ jobs:
           python-version: '3.12'
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
+
+  e2e:
+    # Full visitor flow in Chrome with a fake camera and the mock segmenter.
+    runs-on: ubuntu-latest
+    needs: [web, api]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm install --no-audit --no-fund
+      - run: pip install -r services/api/requirements.txt playwright
+      - name: Build the kiosk against the local API
+        run: npm run build
+        env:
+          VITE_API_BASE_URL: http://localhost:8000
+      - name: Start the API and the kiosk
+        run: |
+          cd services/api
+          PHOTOBOOTH_SEGMENTATION_PROVIDER=mock PHOTOBOOTH_CORS_ORIGINS=http://localhost:4173 \
+            nohup python -m uvicorn app.main:app --port 8000 > /tmp/api.log 2>&1 &
+          cd ../../apps/kiosk
+          nohup npx vite preview --port 4173 --strictPort > /tmp/kiosk.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS localhost:8000/api/admin/health >/dev/null && curl -fsS localhost:4173 >/dev/null && break; sleep 1; done
+      - name: Run the visitor flow
+        run: |
+          mkdir -p e2e-screens
+          python tests/e2e/kiosk_flow.py
+        env:
+          KIOSK_URL: http://localhost:4173
+          SCREENSHOT_DIR: e2e-screens
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screens
+          path: e2e-screens
+      - if: failure()
+        run: tail -50 /tmp/api.log /tmp/kiosk.log

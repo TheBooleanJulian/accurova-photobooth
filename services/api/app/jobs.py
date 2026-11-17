@@ -5,7 +5,7 @@ a failed job can be retried a limited number of times; a job that stops
 making progress is failed with `timeout` so a visitor is never left waiting.
 
 Storage keys are derived from the session id, never from request input:
-    captures/<session>.jpg   original capture, untouched
+    captures/<session>       original capture (JPEG or PNG), untouched
     foregrounds/<job>.png    lossless RGBA foreground (per job, so a retake can
                              never be overwritten by a slower, older job)
 """
@@ -49,7 +49,7 @@ MIN_COVERAGE = 0.01
 
 
 def capture_key(session_id: str) -> str:
-    return f"captures/{session_id}.jpg"
+    return f"captures/{session_id}"
 
 
 def foreground_key(job_id: str) -> str:

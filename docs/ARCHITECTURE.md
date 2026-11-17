@@ -60,12 +60,15 @@ expiring token. See `API_REFERENCE.md`.
   and `IdleTimer` (resets abandoned sessions).
 - `features/delivery/qr.ts`: the QR code for the download link.
 
-The screens that drive these are not built yet.
+The screens live in `pages/kiosk/` (`KioskPage` loads the template, validates
+the frame and restores the session; `CaptureStages` and `ResultStages` hold
+one component per stage). Client branding reaches them only as CSS variables
+from `template.branding.colors`. Visitor copy comes from the template's locale
+files, with built-in English defaults in `features/i18n/strings.ts`.
 
 ## Planned modules (not built)
 
-`features/capture` (countdown, positioning guide), kiosk-side segmentation
-preview and the visitor screens. Built since M1: `packages/image-engine`
+Kiosk-side segmentation preview (MediaPipe) for live positioning feedback. Built since M1: `packages/image-engine`
 (`COMPOSITING.md`), `features/frames` (`FRAME_SYSTEM.md`),
 `features/backgrounds`, `features/compositing`, `services/api.ts`.
 

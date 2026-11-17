@@ -266,8 +266,20 @@ def test_cleanup_removes_intermediates_of_abandoned_sessions(tmp_path: Path):
     assert services.jobs.get(job_id) is None
 
 
-def test_rejects_non_jpeg_captures(tmp_path: Path):
-    client, _, _ = build(tmp_path, CountingMock())
+def test_accepts_png_stills_and_rejects_everything_else(tmp_path: Path):
+    client, services, _ = build(tmp_path, CountingMock())
+    session_id = start(client)
+    buffer = io.BytesIO()
+    Image.new("RGB", (300, 400), (90, 120, 150)).save(buffer, "PNG")
+    assert capture(client, session_id, buffer.getvalue()).status_code == 200
+    job = client.get(f"/api/process/{client.post(f'/api/session/{session_id}/process').json()['jobId']}").json()
+    assert (job["status"], job["width"], job["height"]) == ("done", 300, 400)
+    # The finished photograph must still be a JPEG.
+    assert client.put(f"/api/session/{session_id}/result", content=buffer.getvalue()).status_code == 415
+
+    gif = io.BytesIO()
+    Image.new("RGB", (10, 10)).save(gif, "GIF")
+    assert capture(client, start(client), gif.getvalue()).status_code == 415
     assert capture(client, start(client), b"not an image").status_code == 415
     assert capture(client, "missing-session").status_code == 404
 

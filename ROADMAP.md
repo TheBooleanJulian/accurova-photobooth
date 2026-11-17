@@ -32,7 +32,8 @@ with an external preview, or use a newer tablet. See `docs/PROMPT_REVIEW.md`.
 ## M2 — Capture workflow 🟡
 - ✅ Session state machine, persistent session store (Zustand + IndexedDB), resume-after-reload rules
 - ✅ Wake Lock controller, idle timer for abandoned sessions
-- ⬜ Screens: preview, positioning guide, countdown, capture, review/retake
+- ✅ Screens: preview, positioning guide, countdown, capture, review/retake
+- ⬜ Check the preview orientation and subject size on the real iPad
 
 ## M3 — Segmentation ⬜
 - ✅ Built early (backend): capture upload, idempotent segmentation jobs with
@@ -44,7 +45,8 @@ with an external preview, or use a newer tablet. See `docs/PROMPT_REVIEW.md`.
 ## M4 — Background compositing 🟡
 - ✅ Image engine: placement from composition metadata, cover crop, contact shadow, single JPEG export
 - ✅ Background library (enabled, ordered, safe fallback) and `/admin/compose` preview tool
-- ⬜ Visitor background selection screen, colour matching
+- ✅ Visitor background selection screen
+- ⬜ Colour matching
 
 ## M5 — Frame engine 🟡
 - ✅ SVG and PNG adapters, sponsor slots, frame baked into the exported JPEG
@@ -60,7 +62,10 @@ Full kiosk flow, EN/中文, QR code + download page, auto reset.
   client, visitor download page `/d/<token>` (EN/中文, save and share)
 - ✅ API container published to GHCR by GitHub Actions
 - ✅ Supabase adapter (stateless API option), processing pipeline orchestrator, delivery QR
-- ⬜ Supabase and R2 verified against real services; visitor screens
+- ✅ Visitor screens: welcome (EN/中文), instructions, camera, review, backdrop, processing,
+  QR result, completion and auto-reset; wake lock and idle reset wired in
+- ✅ End-to-end test of the whole visitor flow in CI (fake camera, mock segmenter)
+- ⬜ Supabase and R2 verified against real services
 
 ## M7 — Administration ⬜
 Admin authentication, frame/background/sponsor management, lighting

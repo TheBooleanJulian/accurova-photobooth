@@ -27,7 +27,7 @@ from .jobs import (
 )
 from .retention import cleanup_expired
 from .segmentation import SegmentationProvider, build_segmentation
-from .security import RateLimiter, client_key, read_limited, require_admin, validate_jpeg
+from .security import RateLimiter, client_key, read_limited, require_admin, validate_image, validate_jpeg
 from .sessions import Session, SessionStore, utcnow
 from .storage import ObjectNotFound, ObjectStorage, build_storage
 from .templates import TemplateInvalid, TemplateNotFound, TemplateStore
@@ -213,7 +213,7 @@ def create_app(
 
     @app.put("/api/session/{session_id}/capture")
     async def upload_capture(session_id: str, request: Request) -> dict:
-        """Stores the original capture (raw JPEG body), byte for byte.
+        """Stores the original capture (raw JPEG or PNG body), byte for byte.
 
         A new upload is a retake: it replaces the capture and discards any
         job and foreground made from the previous one.
@@ -223,9 +223,10 @@ def create_app(
         if session.has_result:
             raise HTTPException(status_code=409, detail="This session already has its final photograph")
         data = await read_limited(request, settings.max_upload_bytes)
-        width, height = validate_jpeg(data, settings.max_image_edge_px)
+        # A still photograph may arrive as PNG; the finished photo is always JPEG.
+        width, height, content_type = validate_image(data, settings.max_image_edge_px, ("JPEG", "PNG"))
         delete_intermediates(session.id, services.jobs, services.storage)
-        services.storage.put(capture_key(session.id), data, "image/jpeg")
+        services.storage.put(capture_key(session.id), data, content_type)
         return {"sessionId": session.id, "width": width, "height": height, "bytes": len(data)}
 
     @app.post("/api/session/{session_id}/process", status_code=202)

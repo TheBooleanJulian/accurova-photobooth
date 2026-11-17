@@ -24,17 +24,23 @@ async def read_limited(request: Request, limit: int) -> bytes:
     return b"".join(chunks)
 
 
-def validate_jpeg(data: bytes, max_edge: int) -> tuple[int, int]:
-    """Confirms `data` really is a decodable JPEG and returns (width, height).
+CONTENT_TYPES = {"JPEG": "image/jpeg", "PNG": "image/png"}
 
-    The declared content type is never trusted; the bytes are inspected.
+
+def validate_image(data: bytes, max_edge: int, formats: tuple[str, ...] = ("JPEG",)) -> tuple[int, int, str]:
+    """Confirms `data` really is a decodable image in an accepted format.
+
+    Returns (width, height, content type). The declared content type is never
+    trusted; the bytes are inspected.
     """
     if not data:
         raise HTTPException(status_code=400, detail="Empty upload")
     try:
         with Image.open(io.BytesIO(data)) as image:
-            if image.format != "JPEG":
-                raise HTTPException(status_code=415, detail="Only JPEG images are accepted")
+            if image.format not in formats:
+                accepted = " or ".join(formats)
+                raise HTTPException(status_code=415, detail=f"Only {accepted} images are accepted")
+            content_type = CONTENT_TYPES[image.format]
             width, height = image.size
             if max(width, height) > max_edge:
                 raise HTTPException(status_code=413, detail="Image dimensions are too large")
@@ -42,7 +48,12 @@ def validate_jpeg(data: bytes, max_edge: int) -> tuple[int, int]:
     except HTTPException:
         raise
     except (UnidentifiedImageError, Image.DecompressionBombError, OSError, SyntaxError, ValueError) as e:
-        raise HTTPException(status_code=415, detail="The upload is not a valid JPEG") from e
+        raise HTTPException(status_code=415, detail="The upload is not a valid image") from e
+    return width, height, content_type
+
+
+def validate_jpeg(data: bytes, max_edge: int) -> tuple[int, int]:
+    width, height, _ = validate_image(data, max_edge)
     return width, height
 
 

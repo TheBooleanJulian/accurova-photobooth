@@ -24,7 +24,7 @@ npm run build        # type-check + production build to apps/kiosk/dist
 | `/admin/report#…` | Diagnostics results opened on a phone from the QR code |
 | `/admin/compose` | Preview of the final image: background, stand-in visitor, frame |
 | `/d/<token>` | Visitor download page |
-| `/kiosk/little-red-dot-tours` | Template-driven welcome screen |
+| `/kiosk/little-red-dot-tours` | The visitor kiosk (needs the API for processing) |
 
 API (templates, sessions, delivery; the kiosk does not call it yet):
 

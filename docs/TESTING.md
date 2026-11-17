@@ -5,7 +5,7 @@
 | Kind | Where | What it proves |
 | --- | --- | --- |
 | **Simulated unit tests** | `*.test.ts`, run by `npm test` | Logic: provider selection, fallbacks, cleanup, schema rules. Uses fake tracks and injected encoders. Says nothing about real cameras. |
-| **Browser smoke test** | Manual, Chrome with `--use-fake-device-for-media-stream` | The built page works end to end against real browser APIs with a synthetic camera. |
+| **End-to-end test** | `tests/e2e/kiosk_flow.py`, CI job `e2e` | The whole visitor flow in Chrome with a fake camera against the API with the mock segmenter: language switch, capture, retake, reload recovery, processing, QR result, auto-reset. Screenshots are uploaded as a CI artifact. |
 | **Physical hardware** | `docs/CAMERA_COMPATIBILITY.md` | What a real device delivers. The only evidence that counts for image quality. |
 
 ## Commands
@@ -15,6 +15,9 @@ npm test                 # vitest, jsdom
 npm run typecheck
 npm run build
 cd services/api && python -m pytest
+# end to end: API with PHOTOBOOTH_SEGMENTATION_PROVIDER=mock on :8000, kiosk built
+# with VITE_API_BASE_URL=http://localhost:8000 and served, then:
+KIOSK_URL=http://localhost:4173 python tests/e2e/kiosk_flow.py
 ```
 
 ## Current coverage
@@ -56,7 +59,7 @@ the Supabase stores and the whole API on them, against an in-memory emulator
 
 ## Not yet covered
 
-Component tests for the pages and the end-to-end visitor flow (M6). The
+Component tests for individual screens (the flow is covered end to end). The
 compositor's pixel output is checked by eye in `/admin/compose`, not by an
 automated image comparison. No real segmentation model has been run. R2 and Supabase have not been
 exercised against real services.

@@ -97,7 +97,7 @@ export class PhotoboothApi {
   uploadCapture(sessionId: string, image: Blob): Promise<CaptureReceipt> {
     return this.json(`/api/session/${sessionId}/capture`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'image/jpeg' },
+      headers: { 'Content-Type': image.type || 'application/octet-stream' },
       body: image,
     });
   }
